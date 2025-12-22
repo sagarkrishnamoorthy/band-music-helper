@@ -48,13 +48,39 @@ amt_pipeline = AMTPipeline()
 
 @app.get("/favicon.ico")
 async def favicon():
-    """Return 204 No Content for favicon requests."""
+    """
+    Return 204 No Content for favicon requests.
+    
+    Prevents browser 404 errors when requesting favicon.ico.
+    
+    Returns:
+        JSONResponse with 204 No Content status
+    """
     return JSONResponse(status_code=204, content={})
 
 
 @app.get("/")
 async def root():
-    """Root endpoint."""
+    """
+    Root endpoint providing service information and available endpoints.
+    
+    Returns basic metadata about the Band Music API including version
+    and links to available endpoints.
+    
+    Returns:
+        dict: Service metadata with version and endpoint information
+        
+    Example:
+        Response: {
+            "message": "Band Music API",
+            "version": "1.0.0",
+            "endpoints": {
+                "omr": "/api/omr/upload",
+                "amt": "/api/amt/upload",
+                "docs": "/docs"
+            }
+        }
+    """
     return {
         "message": "Band Music API",
         "version": "1.0.0",
@@ -68,7 +94,21 @@ async def root():
 
 @app.get("/api/health")
 async def health_check():
-    """Health check endpoint."""
+    """
+    Health check endpoint for monitoring service availability.
+    
+    Returns the current health status of the Band Music API.
+    Use this endpoint for load balancer health checks and monitoring.
+    
+    Returns:
+        dict: Health status and service information
+        
+    Example:
+        Response: {
+            "status": "healthy",
+            "service": "Band Music API"
+        }
+    """
     return {
         "status": "healthy",
         "service": "Band Music API"

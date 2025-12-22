@@ -1,21 +1,22 @@
 # 🎵 Band Music - Music Conversion Platform
 
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Node.js 18+](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-teal.svg)](https://fastapi.tiangolo.com/)
+[![React 18](https://img.shields.io/badge/React-18+-blue.svg)](https://react.dev/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Code style: black](https://img.shields.io/badge/Code%20style-black-000000.svg)](https://github.com/psf/black)
+
 Transform sheet music images into playable audio, and audio files into sheet music scores using AI and open-source music libraries.
+
+**[Quick Start](#quick-start)** • **[Documentation](#documentation)** • **[Contributing](#contributing)** • **[License](#license)**
 
 ## 📖 Documentation
 
-- **[README.md](README.md)** (this file) - Complete project overview and setup guide
-- **[QUICKSTART.md](QUICKSTART.md)** - Get up and running in 5 minutes
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** - System design and technical architecture
-- **[DEVELOPMENT.md](DEVELOPMENT.md)** - Development guidelines and best practices
-- **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)** - Detailed implementation summary
-- **[REFACTORING_SUMMARY.md](REFACTORING_SUMMARY.md)** - Recent architectural improvements
-- **Backend Docs:**
-  - [backend/REFACTORING.md](backend/REFACTORING.md) - Backend architecture patterns
-  - [backend/QUICKSTART.md](backend/QUICKSTART.md) - Backend-specific setup
-- **Frontend Docs:**
-  - [frontend/REFACTORING.md](frontend/REFACTORING.md) - Frontend architecture patterns
-  - [frontend/README.md](frontend/README.md) - Frontend-specific documentation
+- **[Quick Start Guide](QUICKSTART.md)** - Get up and running in 5 minutes
+- **[Architecture Guide](ARCHITECTURE.md)** - System design and technical architecture
+- **[Development Guide](DEVELOPMENT.md)** - Development guidelines and best practices
+- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the project
 
 ## ✨ Features
 
@@ -438,18 +439,36 @@ MIT License - Feel free to use this project for personal or commercial purposes.
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+We welcome contributions! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines on:
+- **Getting Started**: Setup and development environment
+- **Code Standards**: Follow PEP 8, black formatting, type hints
+- **Branching**: Feature branches, commit conventions
+- **Testing**: Write tests for new features
+- **PR Process**: How to submit pull requests
 
+**Quick Contributing Steps**:
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Follow [code standards](CONTRIBUTING.md#code-style-guide)
+4. Add tests for new functionality
+5. Submit a pull request with a clear description
 
-## 👨‍💻 Author
+## 📜 Code of Conduct
 
-Built with ❤️ using open-source music AI and notation libraries.
+This project is committed to providing a welcoming and inclusive environment. Please read [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for our community standards.
+
+## 📝 License
+
+MIT License - see [LICENSE](LICENSE) for details
+
+## 🆘 Support
+
+- **Issues**: [GitHub Issues](https://github.com/sagarkrishnamoorthy/band-music-helper/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/sagarkrishnamoorthy/band-music-helper/discussions)
+- **Contributing**: See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---
 
 **Note:** This project requires significant computational resources for audio transcription (AMT). Processing times may vary based on file size and system specifications.
+
+**Built with ❤️ using open-source music AI and notation libraries** 🎵
