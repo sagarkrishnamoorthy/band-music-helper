@@ -463,8 +463,8 @@ MIT License - see [LICENSE](LICENSE) for details
 
 ## 🆘 Support
 
-- **Issues**: [GitHub Issues](https://github.com/sagarkrishnamoorthy/band-music-helper/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/sagarkrishnamoorthy/band-music-helper/discussions)
+- **Issues**: [GitHub Issues](https://github.com/vijvid807/band-music-helper/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/vijvid807/band-music-helper/discussions)
 - **Contributing**: See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---

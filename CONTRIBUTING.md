@@ -543,8 +543,8 @@ Before submitting PR, ensure:
 
 ## 🤔 Questions?
 
-- Check existing [GitHub Issues](https://github.com/sagarkrishnamoorthy/band-music-helper/issues)
-- Review [GitHub Discussions](https://github.com/sagarkrishnamoorthy/band-music-helper/discussions)
+- Check existing [GitHub Issues](https://github.com/vijvid807/band-music-helper/issues)
+- Review [GitHub Discussions](https://github.com/vijvid807/band-music-helper/discussions)
 - Review project [documentation](QUICKSTART.md)
 
 ## 📜 License
