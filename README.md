@@ -1,474 +1,106 @@
-# 🎵 Band Music - Music Conversion Platform
+# Band Music Helper 🎵
 
-[![Python 3.11+](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![Node.js 18+](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-teal.svg)](https://fastapi.tiangolo.com/)
-[![React 18](https://img.shields.io/badge/React-18+-blue.svg)](https://react.dev/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Code style: black](https://img.shields.io/badge/Code%20style-black-000000.svg)](https://github.com/psf/black)
+A tool for converting between sheet music and audio. Upload sheet music to hear it played back with different instruments, or upload audio to get sheet music notation.
 
-Transform sheet music images into playable audio, and audio files into sheet music scores using AI and open-source music libraries.
+## What It Does
 
-**[Quick Start](#quick-start)** • **[Documentation](#documentation)** • **[Contributing](#contributing)** • **[License](#license)**
+The app has two main features:
 
-## 📖 Documentation
+**Sheet Music → Audio**
+- Upload an image or PDF of sheet music
+- Choose an instrument (piano, trombone, or trumpet)
+- Get an MP3 file with the music played in that instrument sound
 
-- **[Quick Start Guide](QUICKSTART.md)** - Get up and running in 5 minutes
-- **[Architecture Guide](ARCHITECTURE.md)** - System design and technical architecture
-- **[Development Guide](DEVELOPMENT.md)** - Development guidelines and best practices
-- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the project
+**Audio → Sheet Music**
+- Upload an audio file (MP3, WAV, etc.)
+- Get a PDF of the sheet music notation
 
-## ✨ Features
+## Why I Built This
 
-### 🎼 Use Case 1: Sheet Music → Audio
-Convert sheet music images or PDFs into playable MP3 audio files with your choice of instrument.
+I play trombone in my school band, and practicing outside rehearsals is harder than it should be. If I want to hear what a piece sounds like with my part, or if I want to practice along with a recording but need the sheet music, there wasn't a simple way to do both.
 
-**Pipeline:**
-1. **OMR (Oemer):** Extracts musical notation from images
-2. **Processing (music21):** Converts MusicXML to MIDI format
-3. **Instrument Selection:** Apply instrument program changes (Piano, Trombone, Trumpet)
-4. **Synthesis (FluidSynth):** Generates high-quality MP3 audio with selected instrument
+This tool makes practice more flexible. I can work on pieces when band directors aren't around and hear different parts to understand how they fit together.
 
-**Supported Input:** PNG, JPG, JPEG, PDF  
-**Instrument Options:** 🎹 Piano, 🎺 Trombone, 🎺 Trumpet  
-**Output:** MP3 audio file
+## How It Works
 
-**Note:** For best results with OMR, use sheet music with 1-2 staves. Complex multi-staff scores (3+ staves) may not be processed accurately.
+**Sheet Music → Audio Pipeline:**
+1. OMR (Optical Music Recognition) reads the notation from the image
+2. Converts it to MIDI format
+3. Applies the selected instrument sound
+4. Generates the MP3 audio file using FluidSynth
 
-### 🎵 Use Case 2: Audio → Sheet Music
-Convert audio files into readable PDF sheet music scores.
+Note: Works best with 1-2 staff scores. Full orchestra pieces with many staves can confuse the OMR.
 
-**Pipeline:**
-1. **AMT (Basic Pitch):** Transcribes audio to MIDI notation
-2. **Processing (music21):** Converts MIDI to MusicXML format
-3. **Rendering (LilyPond):** Generates professional PDF scores
+**Audio → Sheet Music Pipeline:**
+1. AMT (Automatic Music Transcription) using Spotify's Basic Pitch
+2. Converts detected notes to MusicXML format
+3. Renders professional sheet music as PDF using LilyPond
 
-**Supported Input:** MP3, WAV, OGG, M4A, FLAC  
-**Output:** PDF sheet music score
+The transcription isn't perfect with complex harmonies or background noise, but it works well for single-instrument practice recordings.
 
-## 📁 Project Structure
+## Tech Stack
+
+**Backend:**
+- FastAPI (Python web framework)
+- Oemer for OMR
+- Basic Pitch for AMT
+- music21 for format conversions
+- FluidSynth for audio synthesis
+- LilyPond for PDF rendering
+
+**Frontend:**
+- React with TypeScript
+- Simple UI for file upload and conversion
+
+## Project Structure
 
 ```
-band-music/
-├── backend/                 # Python FastAPI server
+band-music-helper/
+├── backend/
+│   ├── main.py              # FastAPI application
 │   ├── src/
-│   │   ├── omr/            # Optical Music Recognition
-│   │   │   └── processor.py
-│   │   ├── amt/            # Automatic Music Transcription
-│   │   │   └── processor.py
-│   │   ├── processing/     # Music format conversions
-│   │   │   ├── converter.py    # MusicXML ↔ MIDI
-│   │   │   ├── synthesizer.py  # MIDI → Audio
-│   │   │   └── renderer.py     # MusicXML → PDF
-│   │   ├── pipeline/       # Processing pipelines
-│   │   │   ├── omr_pipeline.py
-│   │   │   └── amt_pipeline.py
-│   │   └── config/         # Settings and configuration
-│   ├── main.py             # FastAPI application
-│   ├── requirements.txt         # Python dependencies (flexible versions)
-│   ├── requirements-pinned.txt  # Pinned versions for reproducibility
-│   ├── setup.sh            # Setup script
-│   ├── uploads/            # Temporary uploads
-│   ├── outputs/            # Generated files
-│   └── logs/               # Application logs
-│
-└── frontend/               # React TypeScript app
-    ├── src/
-    │   ├── components/     # React components
-    │   │   ├── OMRConverter.tsx
-    │   │   └── AMTConverter.tsx
-    │   ├── services/       # API integration
-    │   │   └── api.ts
-    │   ├── App.tsx         # Main application
-    │   └── index.tsx       # Entry point
-    ├── public/             # Static assets
-    ├── package.json        # Node dependencies
-    └── tailwind.config.js  # Tailwind CSS config
+│   │   ├── omr/             # Optical Music Recognition
+│   │   ├── amt/             # Audio transcription
+│   │   ├── processing/      # Format conversions
+│   │   └── pipeline/        # Processing workflows
+│   ├── uploads/             # Temporary file storage
+│   ├── outputs/             # Generated files
+│   └── logs/                # Application logs
+└── frontend/
+    └── src/
+        ├── components/      # React UI components
+        └── services/        # API client
 ```
 
-## 🛠 Technology Stack
+## Getting Started
 
-### Backend
-- **Framework:** FastAPI 0.109+ (Python)
-- **OMR:** [Oemer](https://github.com/BreezeWhite/oemer) - Optical Music Recognition
-- **AMT:** [Basic Pitch](https://github.com/spotify/basic-pitch) - Spotify's audio transcription
-- **Processing:** [music21](https://web.mit.edu/music21/) - Music notation toolkit
-- **Synthesis:** FluidSynth + midi2audio + mido - MIDI to audio conversion with instrument selection
-- **Rendering:** [LilyPond](https://lilypond.org/) - Music engraving
-- **Logging:** Loguru
-- **Validation:** Pydantic
+See [QUICKSTART.md](QUICKSTART.md) for setup instructions.
 
-### Frontend
-- **Framework:** React 18+ with TypeScript
-- **Styling:** Tailwind CSS
-- **HTTP Client:** Axios
-- **Build Tool:** Create React App
+Requirements:
+- Python 3.11+
+- Node.js 18+
+- System dependencies: FluidSynth, LilyPond, FFmpeg
 
-## 🚀 Quick Start
+## What I Learned
 
-### Prerequisites
+Building this taught me about making infrastructure decisions. Things like:
+- Handling file uploads and processing status
+- Making sure temporary files get cleaned up properly
+- Giving useful error messages when something goes wrong
+- Managing different processing pipelines that hand off data to each other
 
-#### Required Software
-- **Python 3.9-3.12** ⚠️ *Python 3.13+ not yet supported* - see [PYTHON_VERSION.md](backend/PYTHON_VERSION.md)
-- **Node.js 18+**
-- **npm or yarn**
+Each part (OMR, conversion, synthesis, transcription) has to work on its own, but they also need to pass data cleanly between steps. If one step fails, you need to catch it early so you're not wasting time on the next steps.
 
-#### System Dependencies
+## Current Status
 
-**macOS:**
-```bash
-brew install fluidsynth lilypond poppler
-```
+This is a working tool that handles the conversions I need for band practice. The core pipelines are reliable, but error handling could be better for edge cases like unusual file formats or very complex scores.
 
-**Ubuntu/Debian:**
-```bash
-sudo apt-get update
-sudo apt-get install fluidsynth lilypond poppler-utils
-```
+The bidirectional conversion (sheet ↔ audio) was the interesting challenge—making both pipelines work correctly and handling failures gracefully.
 
-**Windows:**
-- Install FluidSynth: [Download](http://www.fluidsynth.org/)
-- Install LilyPond: [Download](https://lilypond.org/download.html)
-- Install Poppler: [Download](https://blog.alivate.com.au/poppler-windows/)
+## Contributing
 
-### Backend Setup
+If you find bugs or have suggestions, feel free to open an issue.
 
-1. **Navigate to backend directory:**
-   ```bash
-   cd backend
-   ```
+## License
 
-2. **Run setup script (recommended):**
-   ```bash
-   chmod +x setup.sh
-   ./setup.sh
-   ```
-
-   Or manually:
-   ```bash
-   # Create virtual environment
-   python3 -m venv venv
-   source venv/bin/activate  # Windows: venv\Scripts\activate
-   
-   # Install dependencies
-   pip install -r requirements.txt
-   
-   # Create environment file
-   cp .env.example .env
-   # Edit .env and update paths as needed
-   
-   # Create directories
-   mkdir -p uploads outputs logs
-   ```
-
-3. **Start the server:**
-   ```bash
-   source venv/bin/activate  # If not already activated
-   uvicorn main:app --reload --host 0.0.0.0 --port 8000
-   ```
-
-   Server will be available at: http://localhost:8000
-   API documentation: http://localhost:8000/docs
-
-### Frontend Setup
-
-1. **Navigate to frontend directory:**
-   ```bash
-   cd frontend
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-
-3. **Create environment file:**
-   ```bash
-   cp .env.example .env
-   ```
-
-4. **Start development server:**
-   ```bash
-   npm start
-   ```
-
-   Application will open at: http://localhost:3000
-
-## 📡 API Endpoints
-
-### Health Check
-```http
-GET /api/health
-```
-Returns server health status.
-
-### OMR Pipeline (Sheet Music → Audio)
-
-**Upload Image/PDF:**
-```http
-POST /api/omr/upload?instrument={piano|trombone|trumpet}
-Content-Type: multipart/form-data
-
-file: [image/PDF file]
-```
-Query Parameters:
-- `instrument` (optional): Instrument for audio synthesis - `piano` (default), `trombone`, or `trumpet`
-
-Returns: `{ job_id, status, message }`
-
-**Check Status:**
-```http
-GET /api/omr/status/{job_id}
-```
-Returns: `{ type, status, filename, progress, step, error }`
-
-**Download Result:**
-```http
-GET /api/omr/download/{job_id}
-```
-Returns: MP3 audio file
-
-### AMT Pipeline (Audio → Sheet Music)
-
-**Upload Audio:**
-```http
-POST /api/amt/upload
-Content-Type: multipart/form-data
-
-file: [audio file]
-```
-Returns: `{ job_id, status, message }`
-
-**Check Status:**
-```http
-GET /api/amt/status/{job_id}
-```
-Returns: `{ type, status, filename, progress, step, error }`
-
-**Download Result:**
-```http
-GET /api/amt/download/{job_id}
-```
-Returns: PDF score file
-
-## 🔧 Configuration
-
-### Backend Configuration
-
-Edit `backend/.env`:
-
-```env
-# Debug mode
-DEBUG=true
-
-# FluidSynth soundfont path (adjust for your system)
-FLUIDSYNTH_SOUNDFONT=/usr/share/sounds/sf2/FluidR3_GM.sf2
-
-# CORS origins (comma-separated)
-CORS_ORIGINS=http://localhost:3000,http://localhost:5173
-
-# File upload limits
-MAX_UPLOAD_SIZE=104857600
-
-# Cleanup intermediate files
-CLEANUP_FILES=true
-```
-
-### Frontend Configuration
-
-Edit `frontend/.env`:
-
-```env
-REACT_APP_API_URL=http://localhost:8000
-```
-
-## 📝 Usage Examples
-
-### Using the Web Interface
-
-1. Open http://localhost:3000
-2. Select a tab:
-   - **Sheet Music → Audio:** Upload sheet music image/PDF
-   - **Audio → Sheet Music:** Upload audio file
-3. Click "Convert" button
-4. Wait for processing (progress bar shows status)
-5. Download the result when complete
-
-### Using the API (curl)
-
-**Convert sheet music to audio:**
-```bash
-# Upload (default piano)
-curl -X POST http://localhost:8000/api/omr/upload \
-  -F "file=@sheet_music.png"
-
-# Upload with instrument selection
-curl -X POST "http://localhost:8000/api/omr/upload?instrument=trumpet" \
-  -F "file=@sheet_music.png"
-
-# Check status
-curl http://localhost:8000/api/omr/status/{job_id}
-
-# Download result
-curl -o output.mp3 http://localhost:8000/api/omr/download/{job_id}
-```
-
-**Convert audio to sheet music:**
-```bash
-# Upload
-curl -X POST http://localhost:8000/api/amt/upload \
-  -F "file=@song.mp3"
-
-# Check status
-curl http://localhost:8000/api/amt/status/{job_id}
-
-# Download result
-curl -o score.pdf http://localhost:8000/api/amt/download/{job_id}
-```
-
-## 🧪 Development
-
-### Backend Development
-
-```bash
-cd backend
-source venv/bin/activate
-uvicorn main:app --reload --log-level debug
-```
-
-### Frontend Development
-
-```bash
-cd frontend
-npm start
-```
-
-### Running Tests
-
-```bash
-# Backend tests
-cd backend
-pytest
-
-# Frontend tests
-cd frontend
-npm test
-```
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**1. FluidSynth soundfont not found**
-- Update `FLUIDSYNTH_SOUNDFONT` path in `.env`
-- Download a soundfont: https://musical-artifacts.com/artifacts?tags=soundfont
-
-**2. LilyPond command not found**
-- Ensure LilyPond is installed and in PATH
-- macOS: `brew install lilypond`
-- Linux: `apt-get install lilypond`
-
-**3. PDF conversion fails (poppler)**
-- Install poppler-utils
-- macOS: `brew install poppler`
-- Linux: `apt-get install poppler-utils`
-
-**4. Python import errors**
-- Activate virtual environment: `source venv/bin/activate`
-- Reinstall dependencies: `pip install -r requirements.txt` (or `requirements-pinned.txt` for exact versions)
-
-**5. CORS errors in browser**
-- Check backend is running on port 8000
-- Verify `CORS_ORIGINS` in backend `.env`
-- Clear browser cache
-
-## 📚 Libraries & Credits
-
-- **[Oemer](https://github.com/BreezeWhite/oemer)** - Optical Music Recognition
-- **[Basic Pitch](https://github.com/spotify/basic-pitch)** - Automatic Music Transcription by Spotify
-- **[music21](https://web.mit.edu/music21/)** - Music notation toolkit
-- **[FluidSynth](http://www.fluidsynth.org/)** - Software synthesizer
-- **[LilyPond](https://lilypond.org/)** - Music engraving program
-- **[FastAPI](https://fastapi.tiangolo.com/)** - Modern Python web framework
-- **[React](https://react.dev/)** - Frontend JavaScript library
-
-## 📂 Project Structure
-
-```
-band-music/
-├── README.md                    # Main project documentation (you are here)
-├── QUICKSTART.md               # Quick start guide
-├── ARCHITECTURE.md             # System architecture
-├── DEVELOPMENT.md              # Developer guide
-├── PROJECT_SUMMARY.md          # Implementation summary
-├── REFACTORING_SUMMARY.md      # Refactoring documentation
-├── backend/                    # Python FastAPI backend
-│   ├── src/                    # Source code
-│   │   ├── core/              # DI container & dependencies
-│   │   ├── services/          # Business logic services
-│   │   ├── api/               # API routes & models
-│   │   ├── omr/               # Optical Music Recognition
-│   │   ├── amt/               # Automatic Music Transcription
-│   │   ├── processing/        # Music format conversions
-│   │   ├── pipeline/          # Processing pipelines
-│   │   └── config/            # Configuration
-│   ├── main.py                # FastAPI application (legacy)
-│   ├── main_refactored.py     # Refactored FastAPI app
-│   ├── requirements.txt                      # Python dependencies (recommended)
-│   ├── requirements-legacy-python39-312.txt # Legacy exact versions
-│   ├── REFACTORING.md         # Backend architecture guide
-│   └── QUICKSTART.md          # Backend setup guide
-└── frontend/                   # React TypeScript frontend
-    ├── src/
-    │   ├── components/        # React components
-    │   │   ├── common/        # Reusable UI components
-    │   │   ├── OMRConverter.tsx
-    │   │   └── AMTConverter.tsx
-    │   ├── hooks/             # Custom React hooks
-    │   ├── contexts/          # React contexts
-    │   ├── services/          # API integration
-    │   └── App.tsx            # Main application
-    ├── package.json           # Node dependencies
-    ├── REFACTORING.md         # Frontend architecture guide
-    └── README.md              # Frontend documentation
-```
-
-## 📄 License
-
-MIT License - Feel free to use this project for personal or commercial purposes.
-
-## 🤝 Contributing
-
-We welcome contributions! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines on:
-- **Getting Started**: Setup and development environment
-- **Code Standards**: Follow PEP 8, black formatting, type hints
-- **Branching**: Feature branches, commit conventions
-- **Testing**: Write tests for new features
-- **PR Process**: How to submit pull requests
-
-**Quick Contributing Steps**:
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Follow [code standards](CONTRIBUTING.md#code-style-guide)
-4. Add tests for new functionality
-5. Submit a pull request with a clear description
-
-## 📜 Code of Conduct
-
-This project is committed to providing a welcoming and inclusive environment. Please read [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for our community standards.
-
-## 📝 License
-
-MIT License - see [LICENSE](LICENSE) for details
-
-## 🆘 Support
-
-- **Issues**: [GitHub Issues](https://github.com/vijvid807/band-music-helper/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/vijvid807/band-music-helper/discussions)
-- **Contributing**: See [CONTRIBUTING.md](CONTRIBUTING.md)
-
----
-
-**Note:** This project requires significant computational resources for audio transcription (AMT). Processing times may vary based on file size and system specifications.
-
-**Built with ❤️ using open-source music AI and notation libraries** 🎵
+MIT License
